@@ -54,6 +54,16 @@ public class ProductServicesImpl implements IProductServices{
 	public List<ProductModel> findBySearch(String searchPhrase) {
 		return productDAO.findBySearch(searchPhrase);
 	}
+
+	@Override
+	public List<ProductModel> loadInitNine(String orderBy) {
+		return productDAO.loadInitNine(orderBy);
+	}
+
+	@Override
+	public List<ProductModel> loadNextNine(String orderBy, int skipAmount) {
+		return productDAO.loadNextNine(orderBy, skipAmount);
+	}
 	
 	
 }

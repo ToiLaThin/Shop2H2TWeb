@@ -13,8 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import shop.Models.CartItemModel;
 import shop.Models.ProductModel;
+import shop.Models.ReviewModel;
+import shop.Services.Impl.AccountServicesImpl;
 import shop.Services.Impl.InventoryServicesImpl;
 import shop.Services.Impl.ProductServicesImpl;
+import shop.Services.Impl.ReviewServicesImpl;
 
 @WebServlet(urlPatterns = {"/common/product/detail"})
 public class ProductDetailController extends HttpServlet{
@@ -23,10 +26,17 @@ public class ProductDetailController extends HttpServlet{
 	
 	ProductServicesImpl productServicesImpl = new ProductServicesImpl();
 	InventoryServicesImpl inventoryServicesImpl = new InventoryServicesImpl();
-	
+	ReviewServicesImpl reviewServicesImpl = new ReviewServicesImpl();
+	AccountServicesImpl accountServicesImpl = new AccountServicesImpl();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//get current user images
+		HttpSession session = req.getSession();
+		String username = (String) session.getAttribute("username");
+		String accountImages = accountServicesImpl.findById(accountServicesImpl.findAccountId(username)).getImages();
+		req.setAttribute("accountImages", accountImages);
+		
 		int productId = Integer.parseInt(req.getParameter("productId")); 
 		ProductModel product = productServicesImpl.find(productId);		
 		req.setAttribute("product", product); 
@@ -36,8 +46,6 @@ public class ProductDetailController extends HttpServlet{
 			productAmountInInventory = 0;
 		
 		
-		
-		HttpSession session = req.getSession();
 		List<CartItemModel> cart = (List<CartItemModel>) session.getAttribute("cart");
 		int productQuantityInCart;
 		if(cart != null)
@@ -52,7 +60,10 @@ public class ProductDetailController extends HttpServlet{
 		} else {
 			productQuantityInCart = 0;
 		}
-		
+		int allReviewCount = reviewServicesImpl.loadAllByProduct(productId) .size();
+		List<ReviewModel> reviews = reviewServicesImpl.loadInitTenByProduct(productId);
+		req.setAttribute("reviewCount", allReviewCount);
+		req.setAttribute("reviews", reviews);
 		req.setAttribute("productAmountInInventory", productAmountInInventory);
 		req.setAttribute("productQuantityInCart", productQuantityInCart);
 		RequestDispatcher rd = req.getRequestDispatcher("/views/common/product.jsp");

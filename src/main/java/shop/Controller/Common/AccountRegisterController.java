@@ -35,12 +35,20 @@ public class AccountRegisterController extends HttpServlet{
 			account.setFullname(fullname);
 			account.setEmail(email);
 			account.setPhone(phone);
-			accountService.registerAccount(account);
-			req.setAttribute("registerSuccess", true);
-			req.setAttribute("loginFailed", false);
-			req.setAttribute("registerSellerSuccess", false);
-			RequestDispatcher rd = req.getRequestDispatcher("/views/common/login.jsp");
-			rd.forward(req, resp);
+			boolean registerResult = accountService.registerAccount(account);
+			if(registerResult == true)
+			{
+				req.setAttribute("registerSuccess", true);
+				req.setAttribute("loginFailed", false);
+				req.setAttribute("registerSellerSuccess", false);
+				RequestDispatcher rd = req.getRequestDispatcher("/views/common/login.jsp");
+				rd.forward(req, resp);
+			}
+			else {
+				req.setAttribute("userExisted", true);
+				RequestDispatcher rd = req.getRequestDispatcher("/views/common/register.jsp");
+				rd.forward(req, resp);
+			}
 		}
 		else
 		{

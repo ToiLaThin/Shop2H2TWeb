@@ -3,6 +3,7 @@ package shop.DAO.Impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +17,10 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 	@Override
 	public boolean authenticateAccount(String username, String password) {
 		boolean isValid = false;
+		Connection conn = null;
 		try {
 			String sql = "Select * From Account Where username = ? And password = ?";
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
 			ps.setString(2, password);
@@ -30,19 +32,28 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-		}
+		} 
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}	
 		
 		return isValid;
 	}
 
 	@Override
 	public String findRoleAccount(String username, String password) {
+		Connection conn = null;
 		try {
 			String sql = "Select ur.roleName\r\n"
 					+ "From Account u Inner Join Admin ur\r\n"
 					+ "On u.roleId = ur.roleId\r\n"
 					+ "Where u.username = ? And u.password = ?";
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
 			ps.setString(2, password);
@@ -55,15 +66,24 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 		return "";		
 	}
 
 	@Override
 	public void registerAccount(String username, String password) {
+		Connection conn = null;
 		try {
 			//2 là user mặc định sau khi đăng ký có role là user và status là 0(active)
 			String sql = "Insert Into Account(username,password,roleId,status) Values (?,?,2,0)";
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
 			ps.setString(2, password);
@@ -72,14 +92,23 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 	}
 
 	@Override
 	public void becomeSeller(int sellerId,String username) {
+		Connection conn = null;
 		try {
 			//2 là user mặc định sau khi đăng ký có role là user
 			String sql = "Update Account Set sellerid = ?,roleId = 3 Where username = ?";
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, sellerId);
 			ps.setString(2, username);
@@ -88,13 +117,22 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 	}
 
 	@Override
 	public int findSellerId(String username) {
+		Connection conn = null;
 		try {
 			String sql = "Select sellerid From Account Where username = ?";
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);			
 			ResultSet rs = ps.executeQuery();
@@ -105,15 +143,24 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 		return 0;
 	}
 
 	@Override
 	public int findAccountId(String username) {
+		Connection conn = null;
 		try {
 			//2 là user mặc định sau khi đăng ký có role là user
 			String sql = "Select userId From Account Where username = ?";
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);			
 			ResultSet rs = ps.executeQuery();
@@ -124,6 +171,14 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 		return -1;
 	}
 
@@ -131,10 +186,11 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 	public List<AccountModel> findAll() {
 		List<AccountModel> accs = new ArrayList<AccountModel>();
 		String sql = "Select * From Account";
+		Connection conn = null;
 		
 		
-		{try {
-			Connection conn = super.getConnection();
+		try {
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
@@ -157,7 +213,15 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
-		}}
+		} finally  {           
+		        if ( conn != null )
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}  
+		}
+		    
 		return accs;
 	}
 
@@ -165,9 +229,10 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 	public AccountModel findById(int id) {
 		AccountModel acc=new AccountModel();
 		String sql ="Select * from Account where userId=?";
+		Connection conn = null;
 		
 		try {
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -188,6 +253,13 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 		}
 		return acc;
 	}
@@ -196,8 +268,9 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 	public void changeStatus(int id,int status) {
 		
 		String sql="Update Account Set status = ? Where userId = ?";
+		Connection conn = null;
 		try {
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, status);
 			ps.setInt(2, id);
@@ -206,14 +279,24 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 		
 	}
 
 	@Override
-	public void registerAccount(AccountModel account) {
+	public boolean registerAccount(AccountModel account) {
+		Connection conn = null;
+		boolean registerSuccess = true;
 		try {
 			String sql = "Insert Into Account(username,password,roleId,status,email,fullname,images,phone) Values (?,?,2,0,?,?,?,?)";
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, account.getUsername());
 			ps.setString(2, account.getPassword());
@@ -225,6 +308,153 @@ public class AccountDAOImpl extends DbConnection implements IAccountDAO{
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			registerSuccess = false;
+		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
+		return registerSuccess;
+	}
+
+	@Override
+	public List<AccountModel> findAllSeller() {
+		List<AccountModel> accs = new ArrayList<AccountModel>();
+		String sql = "Select * From Account Where sellerid Is Not Null And roleId = 3";
+		Connection conn = null;
+		
+		
+		try {
+			conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				AccountModel acc = new AccountModel();
+				
+				acc.setUserId(rs.getInt("userId"));
+				acc.setUsername(rs.getString("username"));
+				acc.setEmail(rs.getString("email"));
+				acc.setFullname(rs.getString("fullname"));
+				acc.setPassword(rs.getString("password"));
+				acc.setImages(rs.getString("images"));
+				acc.setPhone(rs.getString("phone"));
+				acc.setStatus(rs.getInt("status"));
+				acc.setCode(rs.getString("code"));
+				acc.setRoleId(rs.getInt("roleId"));
+				acc.setSellerId(rs.getInt("sellerid"));
+				acc.setStatus(rs.getInt("status"));
+				accs.add(acc);				
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally  {           
+		        if ( conn != null )
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}  
+		}
+		    
+		return accs;
+	}
+
+	@Override
+	public List<AccountModel> findAllUser() {
+		List<AccountModel> accs = new ArrayList<AccountModel>();
+		String sql = "Select * From Account Where sellerid Is Null And roleId = 2";
+		Connection conn = null;
+		
+		
+		try {
+			conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				AccountModel acc = new AccountModel();
+				
+				acc.setUserId(rs.getInt("userId"));
+				acc.setUsername(rs.getString("username"));
+				acc.setEmail(rs.getString("email"));
+				acc.setFullname(rs.getString("fullname"));
+				acc.setPassword(rs.getString("password"));
+				acc.setImages(rs.getString("images"));
+				acc.setPhone(rs.getString("phone"));
+				acc.setStatus(rs.getInt("status"));
+				acc.setCode(rs.getString("code"));
+				acc.setRoleId(rs.getInt("roleId"));
+				acc.setSellerId(rs.getInt("sellerid"));
+				acc.setStatus(rs.getInt("status"));
+				accs.add(acc);				
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally  {           
+		        if ( conn != null )
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}  
+		}
+		    
+		return accs;
+	}
+
+	@Override
+	public void changePassword(int accountId, String password) {
+		String sql="Update Account Set password = ? Where userId = ?";
+		Connection conn = null;
+		try {
+			conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, password);
+			ps.setInt(2, accountId);
+			ps.executeUpdate();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
+		
+	}
+
+	@Override
+	public void changeProfile(AccountModel account) {
+		String sql="Update Account Set fullname = ?,email = ?, phone = ?, images = ? Where userId = ?";
+		Connection conn = null;
+		try {
+			conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, account.getFullname());
+			ps.setString(2, account.getEmail());
+			ps.setString(3, account.getPhone());
+			ps.setString(4, account.getImages());
+			ps.setInt(5, account.getUserId());
+			ps.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
 		}
 	}
 	

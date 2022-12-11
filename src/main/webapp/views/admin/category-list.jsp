@@ -8,7 +8,7 @@
 	<br>
 	<br>
 	
-	<table class="table table-dark">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th scope="col">CategoryId</th>
@@ -18,7 +18,7 @@
 				<th scope="col">Update</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="align-middle">
 			<c:forEach items="${categories }" var="category" varStatus="STT">
 				<tr scope="row">
 					<td>${category.categoryId }</td>

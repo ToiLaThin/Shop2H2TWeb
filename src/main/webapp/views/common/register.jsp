@@ -16,7 +16,11 @@
 		</div>		
 		<div class="form-group">
 			Account name: <input class="form-control" type="text" name="username" placeholder="Nhập username của bạn:" required><br>
+			<c:if test="${userExisted }">
+				<span class="text-danger">User 's already existed</span><br>
+			</c:if>
 		</div>	
+		
 		<div class="form-group">	
 			Password: <input class="form-control" type="password" name="password" placeholder="Nhập password của bạn:" required><br>
 		</div>

@@ -15,10 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import shop.Models.CartItemModel;
+import shop.Models.ProductModel;
 import shop.Models.ReceiptModel;
 import shop.Services.Impl.CartItemServicesImpl;
 import shop.Services.Impl.CartServicesImpl;
 import shop.Services.Impl.InventoryServicesImpl;
+import shop.Services.Impl.ProductServicesImpl;
 import shop.Services.Impl.ReceiptServicesImpl;
 
 @WebServlet(urlPatterns = {"/common/order/checkout"})
@@ -30,6 +32,7 @@ public class CheckOutController extends HttpServlet{
 	CartServicesImpl cartServicesImpl = new CartServicesImpl();
 	CartItemServicesImpl cartItemServicesImpl = new CartItemServicesImpl();
 	InventoryServicesImpl inventoryServicesImpl = new InventoryServicesImpl();
+	ProductServicesImpl productServicesImpl = new ProductServicesImpl();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -54,6 +57,13 @@ public class CheckOutController extends HttpServlet{
 			for(CartItemModel cartItem : cartItemsOfCart) {
 				int productId = cartItem.getProductId();
 				int quantity = cartItem.getQuantity();
+				
+				//cập nhật revenue của sản phẩm cộng thêm quantity
+				ProductModel productToEdit = productServicesImpl.find(productId);
+				int currProductRevenue = productToEdit.getRevenue();
+				productToEdit.setRevenue(currProductRevenue + quantity);
+				productServicesImpl.editProduct(productToEdit);
+				
 				int productAmountInInventory = inventoryServicesImpl.findAmount(productId);
 				int newProductAmountInInventory = productAmountInInventory - quantity;
 				//đã kiểm tra

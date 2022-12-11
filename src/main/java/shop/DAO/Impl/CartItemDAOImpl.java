@@ -3,6 +3,7 @@ package shop.DAO.Impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +11,16 @@ import shop.Connection.DbConnection;
 import shop.DAO.ICartItemDAO;
 import shop.Models.CartItemModel;
 import shop.Models.ProductModel;
+import shop.Services.Impl.ProductServicesImpl;
 
 public class CartItemDAOImpl extends DbConnection implements ICartItemDAO {
 
 	@Override
 	public void insertToCart(CartItemModel cartItem) {
+		Connection conn = null;
 		String sql = "Insert Into CartItem(quantity,unitPrice,productId,cartId) Values(?,?,?,?)";
 		try {
-			Connection conn = super.getConnection();//getConnetion ket noi db
+			conn = super.getConnection();//getConnetion ket noi db
 			PreparedStatement ps = conn.prepareStatement(sql);//ném câu sql vào để thực thi
 			ps.setInt(1, cartItem.getQuantity());
 			ps.setFloat(2, cartItem.getUnitPrice());
@@ -28,17 +31,26 @@ public class CartItemDAOImpl extends DbConnection implements ICartItemDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 	}
 
 	@Override
 	public List<CartItemModel> findAllByCartId(int cartId) {
+		Connection conn = null;
 		List<CartItemModel> cartItems = new ArrayList<CartItemModel>();
 		String sql = "Select * From CartItem Where cartId = ?";
-		
+		ProductServicesImpl productServicesImpl = new ProductServicesImpl();
 		//cột nào là số thì mặc định là 0
 		//cột nào là String hoặc Date thì mặc định là null
 		try {
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, cartId);
 			ResultSet rs = ps.executeQuery();
@@ -50,10 +62,19 @@ public class CartItemDAOImpl extends DbConnection implements ICartItemDAO {
 				cartItem.setUnitPrice(rs.getFloat("unitPrice"));
 				cartItem.setProductId(rs.getInt("productId"));
 				cartItem.setCartId(rs.getInt("cartId"));
+				cartItem.setProduct(productServicesImpl.find(rs.getInt("cartId")));
 				cartItems.add(cartItem);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
 		}
 		return cartItems;
 	}

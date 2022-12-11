@@ -2,20 +2,23 @@
     pageEncoding="utf-8"%>
 <%@ include file="/common/taglib.jsp" %>
 
-<h3>Cart Waiting</h3>
-<table class="table table-warning">
-	<tr class="row">
-		<th>CartId</th>
-		<th>UserId</th>
-		<th>Buy Date</th>
-		<th>Status</th>
-		<th>Address</th>
-		<th>PhoneNumber</th>
-		<th>Action</th>
-	</tr>
+<h4>Cart Waiting</h4>
+<table class="table table-bordered text-center mb-0">
+	<thead class="text-dark bg-warning">
+		<tr>
+			<th>CartId</th>
+			<th>UserId</th>
+			<th>Buy Date</th>
+			<th>Status</th>
+			<th>Address</th>
+			<th>PhoneNumber</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody class="align-middle">
 	<c:forEach items="${waitingCarts }" var="cart" varStatus="cartSTT">
-		<tr class="row">
-			<td>Cart${cart.cartId }</td>
+		<tr>
+			<td><a class="text-decoration-none" href="<%=request.getContextPath() %>/admin/cart/detail?cartId=${cart.cartId}">Cart${cart.cartId }</a></td>
 			<td>User${cart.userId }</td>
 			<td>${cart.buyDate }</td>
 			<td>${cart.status }</td>
@@ -27,24 +30,28 @@
 			</td>
 		</tr>
 	</c:forEach>
+	</tbody>
 </table>
 <br>
 <br>
 
-<h3>Cart Accepted</h3>
-<table class="table table-success">
-	<tr class="row">
-		<th>CartId</th>
-		<th>UserId</th>
-		<th>Buy Date</th>
-		<th>Status</th>
-		<th>Address</th>
-		<th>PhoneNumber</th>
-		<th>Action</th>
-	</tr>
+<h4>Cart Accepted</h4>
+<table class="table table-bordered text-center mb-0">
+	<thead class="text-dark bg-success">
+		<tr>
+			<th>CartId</th>
+			<th>UserId</th>
+			<th>Buy Date</th>
+			<th>Status</th>
+			<th>Address</th>
+			<th>PhoneNumber</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody class="align-middle">
 	<c:forEach items="${validCarts }" var="cart" varStatus="cartSTT">
-		<tr class="row">
-			<td>Cart${cart.cartId }</td>
+		<tr>
+			<td><a class="text-decoration-none" href="<%=request.getContextPath() %>/admin/cart/detail?cartId=${cart.cartId}">Cart${cart.cartId }</a></td>
 			<td>User${cart.userId }</td>
 			<td>${cart.buyDate }</td>
 			<td>${cart.status }</td>
@@ -55,24 +62,28 @@
 			</td>
 		</tr>
 	</c:forEach>
+	</tbody>
 </table>
 <br>
 <br>
 
-<h3>Cart Declined</h3>
-<table class="table table-danger">
-	<tr class="row">
-		<th>CartId</th>
-		<th>UserId</th>
-		<th>Buy Date</th>
-		<th>Status</th>
-		<th>Address</th>
-		<th>PhoneNumber</th>
-		<th>Action</th>
-	</tr>
+<h4>Cart Declined</h4>
+<table class="table table-bordered text-center mb-0">
+	<thead class="text-dark bg-danger">
+		<tr>
+			<th>CartId</th>
+			<th>UserId</th>
+			<th>Buy Date</th>
+			<th>Status</th>
+			<th>Address</th>
+			<th>PhoneNumber</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody class="align-middle">
 	<c:forEach items="${inValidCarts }" var="cart" varStatus="cartSTT">
-		<tr class="row">
-			<td>Cart${cart.cartId }</td>
+		<tr>
+			<td><a class="text-decoration-none" href="<%=request.getContextPath() %>/admin/cart/detail?cartId=${cart.cartId}">Cart${cart.cartId }</a></td>
 			<td>User${cart.userId }</td>
 			<td>${cart.buyDate }</td>
 			<td>${cart.status }</td>
@@ -83,6 +94,7 @@
 			</td>
 		</tr>
 	</c:forEach>
+	</tbody>
 </table>
 <br>
 <br>

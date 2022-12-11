@@ -3,6 +3,7 @@ package shop.DAO.Impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,9 @@ public class ReceiptDAOImpl extends DbConnection implements IReceiptDAO{
 	public List<ReceiptModel> findAllOfCheckOutedCarts(List<CartModel> checkOutedCartsOfUser) {
 		List<ReceiptModel> receipts = new ArrayList<ReceiptModel>();
 		String sql = "Select * From Receipt Where cartId = ?";
+		Connection conn = null;
 		try {
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			for(CartModel validCartOfUser : checkOutedCartsOfUser)
 			{
 				PreparedStatement ps = conn.prepareStatement(sql);
@@ -39,14 +41,23 @@ public class ReceiptDAOImpl extends DbConnection implements IReceiptDAO{
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 		return receipts;
 	}
 
 	@Override
 	public void insertReceipt(ReceiptModel receipt) {
+		Connection conn = null;
 		String sql = "Insert Into Receipt(releaseDate,cartId) Values(?,?)";
 		try {
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setDate(1, receipt.getReleaseDate());
 			ps.setInt(2, receipt.getCartId());
@@ -54,13 +65,22 @@ public class ReceiptDAOImpl extends DbConnection implements IReceiptDAO{
 		} catch(Exception e) {
 			e.printStackTrace();
 		}		
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
+		}
 	}
 
 	@Override
 	public ReceiptModel find(int receiptId) {
+		Connection conn = null;
 		String sql = "Select * From Receipt Where receiptId = ?";
 		try {
-			Connection conn = super.getConnection();
+			conn = super.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1,receiptId);
 			ResultSet rs = ps.executeQuery();
@@ -76,6 +96,14 @@ public class ReceiptDAOImpl extends DbConnection implements IReceiptDAO{
 			}			
 		} catch(Exception e) {
 			e.printStackTrace();
+		}
+		finally  {           
+	        if ( conn != null )
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}  
 		}
 		return null;
 	}

@@ -20,9 +20,6 @@ import shop.Services.Impl.AccountServicesImpl;
 import shop.Services.Impl.ProductServicesImpl;
 @WebServlet(urlPatterns = {"/admin/UAPManage"})
 public class UAPManage extends HttpServlet{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -31,9 +28,13 @@ public class UAPManage extends HttpServlet{
 		List<AccountModel> Accs = ASI.findAll();
 		IProductServices Pros= new ProductServicesImpl();
 		List<ProductModel> Products= Pros.findAll();
+		List<AccountModel> userAccounts = ASI.findAllUser();
+		List<AccountModel> sellerAccounts = ASI.findAllSeller();
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("utf-8");
 		req.setAttribute("accs", Accs);
+		req.setAttribute("userAccounts", userAccounts);
+		req.setAttribute("sellerAccounts", sellerAccounts);
 		req.setAttribute("pros", Products);
 		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/UAPManage.jsp");
 		rd.forward(req, resp);

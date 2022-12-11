@@ -6,6 +6,9 @@ import shop.Models.ProductModel;
 
 public interface IProductServices {
 	List<ProductModel> findAll();
+	List<ProductModel> loadInitNine(String orderBy);
+	List<ProductModel> loadNextNine(String orderBy, int skipAmount);
+	
 	ProductModel find(int productId);
 	List<ProductModel> findByCategory(int categoryId);
 	List<ProductModel> findBySearch(String searchPhrase);

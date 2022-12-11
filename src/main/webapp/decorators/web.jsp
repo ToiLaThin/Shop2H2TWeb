@@ -4,21 +4,39 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<c:url value="/css/style.css" var="myUrl"></c:url>
-	    <!-- Site meta -->
 	    <meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	    <title>Free Bootstrap 4 Ecommerce Template</title>
-	    <!-- CSS -->
+	    <title>EShopper - Bootstrap Shop Template</title>
+	    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+	    <meta content="Free HTML Templates" name="keywords">
+	    <meta content="Free HTML Templates" name="description">
+	
+	    <!-- Favicon -->
+	    <c:url value="/img/favicon.ico" var="favicon"></c:url>
+	    <link href="${favicon }" rel="icon">
+	
+	    <!-- Google Web Fonts -->
+	    <link rel="preconnect" href="https://fonts.gstatic.com">
+	    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+	
+	    <!-- Font Awesome -->
+	    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+	
+	    <!-- Libraries Stylesheet -->
+	    <c:url value="/lib/owlcarousel/assets/owl.carousel.min.css" var="style0"></c:url>
+	    <link href="${style0}" rel="stylesheet" type="text/css">
+	
+		<c:url value="/css/style1.css" var="style1"></c:url>
+		<!-- Standard Bootstrap Stylesheet -->
 	    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600" rel="stylesheet" type="text/css">
-	    <link href="${myUrl}" rel="stylesheet" type="text/css">
+	    <!-- Customized Bootstrap Stylesheet -->
+	    <link href="${style1}" rel="stylesheet" type="text/css">
 	    
-		<!-- JS AJAX-->	   
+	    <!-- JS AJAX-->	   
 		<script src="https://code.jquery.com/jquery-3.6.1.min.js" type="text/javascript"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	</head>
+	
 	<body>
 		<%@ include file="/common/header.jsp"%>​ ​
 		<!-- body -->

@@ -13,6 +13,8 @@ public class ProductModel {
 	int status;
 	Date modifiedDate;
 	int sellerId;
+	int revenue;
+	boolean isWished;
 	
 	public int getProductId() {
 		return productId;
@@ -74,13 +76,30 @@ public class ProductModel {
 	public void setSellerId(int sellerId) {
 		this.sellerId = sellerId;
 	}
+		
+	public int getRevenue() {
+		return revenue;
+	}
+	public void setRevenue(int revenue) {
+		this.revenue = revenue;
+	}
 	
+	/* phải bắt đầu bằng get nếu không sẽ không truy cập đc property */
+	public boolean getIsWished() {
+		return isWished;
+	}
+	public void setIsWished(boolean isWished) {
+		this.isWished = isWished;
+	}
 	@Override
 	public String toString() {
 		return "ProductModel [productId=" + productId + ", productName=" + productName + ", productCode=" + productCode
 				+ ", categoryId=" + categoryId + ", description=" + description + ", price=" + price + ", images="
-				+ images + ", status=" + status + ", modifiedDate=" + modifiedDate + ", sellerId=" + sellerId + "]";
+				+ images + ", status=" + status + ", modifiedDate=" + modifiedDate + ", sellerId=" + sellerId
+				+ ", revenue=" + revenue + ", isWished=" + isWished + "]";
 	}
+	
+	
 	
 	
 }

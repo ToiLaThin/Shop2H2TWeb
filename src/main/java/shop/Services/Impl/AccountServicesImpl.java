@@ -59,9 +59,29 @@ public class AccountServicesImpl implements IAccountServices{
 	}
 
 	@Override
-	public void registerAccount(AccountModel account) {
-		accountDAOImpl.registerAccount(account);
+	public boolean registerAccount(AccountModel account) {
+		return accountDAOImpl.registerAccount(account);
 		
+	}
+
+	@Override
+	public List<AccountModel> findAllSeller() {
+		return accountDAOImpl.findAllSeller();
+	}
+
+	@Override
+	public List<AccountModel> findAllUser() {
+		return accountDAOImpl.findAllUser();
+	}
+
+	@Override
+	public void changePassword(int accountId, String password) {
+		accountDAOImpl.changePassword(accountId, password);
+	}
+
+	@Override
+	public void changeProfile(AccountModel account) {
+		accountDAOImpl.changeProfile(account);
 	}
 	
 }

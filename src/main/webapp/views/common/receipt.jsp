@@ -2,18 +2,21 @@
     pageEncoding="utf-8"%>
 <%@ include file="/common/taglib.jsp" %>
 
-<h3>Cart Waiting</h3>
-<table class="table table-warning">
-	<tr class="row">
-		<th>CartId</th>
-		<th>UserId</th>
-		<th>Buy Date</th>
-		<th>Status</th>
-		<th>Address</th>
-		<th>PhoneNumber</th>
-	</tr>
+<h4>Cart Waiting</h4>
+<table class="table table-warning text-center mb-0">
+	<thead class="text-dark">
+		<tr>
+			<th>CartId</th>
+			<th>UserId</th>
+			<th>Buy Date</th>
+			<th>Status</th>
+			<th>Address</th>
+			<th>PhoneNumber</th>
+		</tr>
+	</thead>
+	<tbody class="align-middle">
 	<c:forEach items="${waitingCartsOfUser }" var="cart" varStatus="cartSTT">
-		<tr class="row">
+		<tr>
 			<td>Cart${cart.cartId }</td>
 			<td>User${cart.userId }</td>
 			<td>${cart.buyDate }</td>
@@ -22,23 +25,27 @@
 			<td>${cart.phoneNumber }</td>
 		</tr>
 	</c:forEach>
+	</tbody>
 </table>
 <br>
 <br>
 
-<h3>Cart Accepted</h3>
-<table class="table table-success">
-	<tr class="row">
-		<th>CartId</th>
-		<th>UserId</th>
-		<th>Buy Date</th>
-		<th>Status</th>
-		<th>Address</th>
-		<th>PhoneNumber</th>
-		<th>Action</th>
-	</tr>
+<h4>Cart Accepted</h4>
+<table class="table table-success text-center mb-0">
+	<thead class="text-dark">
+		<tr>
+			<th>CartId</th>
+			<th>UserId</th>
+			<th>Buy Date</th>
+			<th>Status</th>
+			<th>Address</th>
+			<th>PhoneNumber</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody class="align-middle">
 	<c:forEach items="${validCartsOfUser }" var="cart" varStatus="cartSTT">
-		<tr class="row">
+		<tr>
 			<td>Cart${cart.cartId }</td>
 			<td>User${cart.userId }</td>
 			<td>${cart.buyDate }</td>
@@ -50,27 +57,32 @@
 			</td>
 		</tr>
 	</c:forEach>
+	</tbody>
 </table>
 <br>
 <br>
 
 <!-- receipt co the xem chi tiet duoc -->
-<h3>Receipts</h3>
-<table class="table table-danger">
-	<tr class="row">
-		<th>receiptId</th>
-		<th>releaseDate</th>
-		<th>cartId</th>		
-		<th>Action</th>	
-	</tr>
+<h4>Receipts</h4>
+<table class="table table-danger text-center mb-0">
+	<thead class="text-dark">
+		<tr>
+			<th>receiptId</th>
+			<th>releaseDate</th>
+			<th>cartId</th>		
+			<th>Action</th>	
+		</tr>
+	</thead>
+	<tbody class="align-middle">
 	<c:forEach items="${receiptsOfUser }" var="receipt" varStatus="receiptSTT">
-		<tr class="row">
+		<tr>
 			<td>Receipt${receipt.receiptId }</td>
 			<td>${receipt.releaseDate }</td>
 			<td>${receipt.cartId }</td>
 			<td><a class="btn btn-sm btn-warning" href="<%=request.getContextPath() %>/common/order/detail?cartId=${receipt.cartId}&receiptId=${receipt.receiptId}">View</a></td>
 		</tr>
 	</c:forEach>
+ 	</tbody>
 </table>
 <br>
 <br>
